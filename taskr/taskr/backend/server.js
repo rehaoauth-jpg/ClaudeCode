@@ -12,6 +12,8 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+const VERSION = process.env.APP_VERSION || '1.0.4';
+
 const JWT_SECRET = process.env.JWT_SECRET || 'taskr-secret-change-in-production';
 const PORT = process.env.PORT || 4000;
 const DB_PATH = process.env.DB_PATH || '/data/taskr.db';
@@ -341,6 +343,9 @@ app.get('/api/tasks/:id/activity', auth, (req, res) => {
 app.get('/api/activity', auth, (req, res) => {
   res.json(db.prepare(`SELECT a.*,u.name as user_name,u.avatar_color,t.title as task_title FROM activity_log a LEFT JOIN users u ON a.user_id=u.id LEFT JOIN tasks t ON a.task_id=t.id ORDER BY a.created_at DESC LIMIT 40`).all().map(r=>({...r,meta:JSON.parse(r.meta||'{}')})));
 });
+
+// ─── VERSION ──────────────────────────────────────────────────
+app.get('/api/version', (req, res) => res.json({ version: VERSION }));
 
 // ─── STATS ────────────────────────────────────────────────────
 app.get('/api/stats', auth, (req, res) => {

@@ -1,6 +1,49 @@
 # Taskr — Full-Stack Task Manager
 
+> **Aktualna wersja: v1.0.4**
+
 Aplikacja do zarządzania zadaniami z backendem Node.js + SQLite, real-time WebSocket sync, drag & drop Kanban i interfejsem inspirowanym iOS 26.
+
+---
+
+## Changelog
+
+### v1.0.4 — 2026-05-13
+- **Fix:** Kliknięcie checkboxa podzadania w otwartym panelu szczegółów teraz natychmiast odświeża widok bez potrzeby zamykania i ponownego otwierania zadania.
+
+### v1.0.3 — 2026-05-13
+- **Fix:** Naprawiono czerwoną kropkę statusu WebSocket — nginx teraz poprawnie proxuje ścieżkę `/ws` do backendu.
+
+### v1.0.2 — 2026-05-13
+- **Fix:** Naprawiono błąd `SyntaxError: Unexpected identifier '$'` w JS (niezamknięty template literal w linii 875) — aplikacja całkowicie nie działała po załadowaniu strony.
+
+### v1.0.1 — 2026-05-13
+- **Fix:** Naprawiono konfigurację nginx — `/` serwuje teraz pliki statyczne zamiast proxować wszystko do backendu (logowanie nie działało).
+- **Fix:** Dodano osobny blok nginx dla proxy API (`/api/`).
+
+### v1.0.0 — 2026-05-12
+- Pierwsze uruchomienie aplikacji Taskr.
+- Frontend HTML + Vanilla JS, PWA, Service Worker.
+- Backend Node.js 20 + Express + SQLite.
+- Autoryzacja JWT + bcrypt.
+- WebSocket real-time sync.
+- Widoki: Pulpit, Lista, Kanban, Kalendarz, Aktywność, Admin.
+- Podzadania z progress ringiem.
+- Komentarze i historia zmian.
+- Docker + docker-compose.
+
+---
+
+## Jak sprawdzić wersję
+
+**Na serwerze:**
+```bash
+cat /opt/ClaudeCode/taskr/taskr/VERSION
+```
+
+**W aplikacji:** widoczna w stopce panelu ustawień (ikona ⚙ w menu).
+
+---
 
 ## Stack technologiczny
 
@@ -63,15 +106,25 @@ Aplikacja do zarządzania zadaniami z backendem Node.js + SQLite, real-time WebS
 
 ---
 
-## Szybki start (lokalnie)
+## Szybki start
 
 ```bash
-git clone / rozpakuj taskr/
-cd taskr
-docker-compose up --build
+git clone https://github.com/rehaoauth-jpg/ClaudeCode.git
+cd ClaudeCode/taskr/taskr
+docker compose up -d --build
 ```
 
 Aplikacja dostępna na: **http://localhost:3000**
+
+---
+
+## Aktualizacja na serwerze
+
+```bash
+update
+```
+
+Skrypt `update.sh` automatycznie pobiera zmiany z GitHub i przebudowuje kontenery.
 
 ---
 
@@ -92,33 +145,24 @@ curl -fsSL https://get.docker.com | sh
 apt install -y docker-compose-plugin
 ```
 
-3. **Skopiuj pliki** na serwer:
+3. **Sklonuj repo i uruchom:**
 ```bash
-# Z Twojego komputera:
-scp -r taskr/ root@192.168.1.50:/opt/taskr/
+git clone https://github.com/rehaoauth-jpg/ClaudeCode.git /opt/ClaudeCode
+cd /opt/ClaudeCode/taskr/taskr
+chmod +x update.sh
+echo 'alias update="bash /opt/ClaudeCode/taskr/taskr/update.sh"' >> ~/.bashrc && source ~/.bashrc
+docker compose up -d --build
 ```
 
 4. **Ustaw JWT_SECRET** w `docker-compose.yml` — zmień na losowy string:
 ```bash
-# Wygeneruj bezpieczny secret:
 openssl rand -hex 32
-```
-
-5. **Uruchom**:
-```bash
-cd /opt/taskr
-docker compose up -d --build
-```
-
-6. **Sprawdź logi**:
-```bash
-docker compose logs -f
 ```
 
 ### Opcja B — Nginx Proxy Manager (domena + HTTPS)
 
 Jeśli masz już NPM na Proxmox:
-- Utwórz Proxy Host → `192.168.1.50:3000`
+- Utwórz Proxy Host → `<IP_LXC>:3000`
 - Włącz SSL przez Let's Encrypt (np. przez Cloudflare DNS challenge)
 - Aplikacja dostępna pod `https://taskr.twojadomena.pl`
 
@@ -136,18 +180,6 @@ docker run --rm -v taskr_taskr-data:/data -v $(pwd):/backup alpine \
 # Cron co noc o 3:00 (dodaj do crontab):
 0 3 * * * docker run --rm -v taskr_taskr-data:/data -v /opt/backups:/backup alpine cp /data/taskr.db /backup/taskr-$(date +\%Y\%m\%d).db
 ```
-
----
-
-## Aktualizacja
-
-```bash
-cd /opt/taskr
-git pull   # lub skopiuj nowe pliki
-docker compose up -d --build
-```
-
-Dane w volume są bezpieczne — nie są kasowane przy rebuildzie.
 
 ---
 
@@ -176,5 +208,7 @@ taskr/
 │   │   └── sw.js          # Service Worker
 │   ├── nginx.conf         # Nginx z proxy do API + WS
 │   └── Dockerfile
+├── update.sh              # Skrypt aktualizacji
+├── VERSION                # Aktualna wersja aplikacji
 └── docker-compose.yml
 ```

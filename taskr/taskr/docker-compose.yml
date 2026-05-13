@@ -3,7 +3,10 @@ version: '3.8'
 services:
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      args:
+        APP_VERSION: ${APP_VERSION:-unknown}
     container_name: taskr-api
     restart: unless-stopped
     environment:
