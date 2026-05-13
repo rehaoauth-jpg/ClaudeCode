@@ -48,7 +48,7 @@ html,body{height:100%;font-family:-apple-system,'SF Pro Display','Helvetica Neue
 /* LAYOUT */
 #app{display:none;height:100vh;position:relative;z-index:1}
 #app.on{display:flex}
-.sidebar{width:var(--sw);flex-shrink:0;background:rgba(8,8,15,.82);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sidebar{width:var(--sw);flex-shrink:0;background:rgba(8,8,15,.82);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;transition:transform .3s cubic-bezier(.4,0,.2,1);padding-top:env(safe-area-inset-top)}
 .sb-brand{display:flex;align-items:center;gap:9px;padding:20px 16px 18px}
 .sb-icon{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
 .sb-brand span{font-size:18px;font-weight:700;letter-spacing:-.4px}
@@ -70,7 +70,7 @@ html,body{height:100%;font-family:-apple-system,'SF Pro Display','Helvetica Neue
 
 /* MAIN */
 .main{flex:1;margin-left:var(--sw);display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:1}
-.topbar{height:var(--th);display:flex;align-items:center;gap:10px;padding:0 20px;background:rgba(8,8,15,.75);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--border);flex-shrink:0}
+.topbar{height:calc(var(--th) + env(safe-area-inset-top));display:flex;align-items:center;gap:10px;padding:env(safe-area-inset-top) 20px 0;background:rgba(8,8,15,.75);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--border);flex-shrink:0}
 .tb-menu{display:none;background:var(--glass);border:1px solid var(--border);border-radius:var(--r);padding:7px 10px;cursor:pointer;color:var(--text);font-size:19px;line-height:1}
 .tb-title{font-size:17px;font-weight:700;flex:1;letter-spacing:-.3px}
 .tb-actions{display:flex;gap:7px;align-items:center}
