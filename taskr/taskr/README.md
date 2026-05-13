@@ -1,12 +1,17 @@
 # Taskr — Full-Stack Task Manager
 
-> **Aktualna wersja: v1.0.5**
+> **Aktualna wersja: v1.0.6**
 
 Aplikacja do zarządzania zadaniami z backendem Node.js + SQLite, real-time WebSocket sync, drag & drop Kanban i interfejsem inspirowanym iOS 26.
 
 ---
 
 ## Changelog
+
+### v1.0.6 — 2026-05-13
+- **Fix:** Safe-area (Dynamic Island / status bar) działa teraz tylko w trybie PWA — w przeglądarce wygląd bez zmian.
+- **Fix:** Scrollowanie w trybie PWA na iPhone poprawione (`-webkit-overflow-scrolling: touch`, `overscroll-behavior: contain`).
+- **Fix:** Wysokość aplikacji używa `-webkit-fill-available` zamiast `100vh` — eliminuje problemy ze skalowaniem w PWA.
 
 ### v1.0.5 — 2026-05-13
 - **Fix:** Topbar i sidebar nie nachodzą już na Dynamic Island i status bar iPhone przy używaniu jako PWA (dodano `env(safe-area-inset-top)`).

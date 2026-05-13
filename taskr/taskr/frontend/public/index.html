@@ -21,7 +21,7 @@
   --sw:240px;--th:58px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;font-family:-apple-system,'SF Pro Display','Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+html,body{height:100%;height:-webkit-fill-available;font-family:-apple-system,'SF Pro Display','Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
 ::-webkit-scrollbar{width:3px;height:3px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 #amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 #amb span{position:absolute;border-radius:50%;filter:blur(90px);opacity:.1}
@@ -46,9 +46,9 @@ html,body{height:100%;font-family:-apple-system,'SF Pro Display','Helvetica Neue
 .auth-demo b{color:var(--text2)}
 
 /* LAYOUT */
-#app{display:none;height:100vh;position:relative;z-index:1}
+#app{display:none;height:100vh;height:-webkit-fill-available;position:relative;z-index:1}
 #app.on{display:flex}
-.sidebar{width:var(--sw);flex-shrink:0;background:rgba(8,8,15,.82);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;transition:transform .3s cubic-bezier(.4,0,.2,1);padding-top:env(safe-area-inset-top)}
+.sidebar{width:var(--sw);flex-shrink:0;background:rgba(8,8,15,.82);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;transition:transform .3s cubic-bezier(.4,0,.2,1)}
 .sb-brand{display:flex;align-items:center;gap:9px;padding:20px 16px 18px}
 .sb-icon{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
 .sb-brand span{font-size:18px;font-weight:700;letter-spacing:-.4px}
@@ -70,7 +70,7 @@ html,body{height:100%;font-family:-apple-system,'SF Pro Display','Helvetica Neue
 
 /* MAIN */
 .main{flex:1;margin-left:var(--sw);display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:1}
-.topbar{height:calc(var(--th) + env(safe-area-inset-top));display:flex;align-items:center;gap:10px;padding:env(safe-area-inset-top) 20px 0;background:rgba(8,8,15,.75);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--border);flex-shrink:0}
+.topbar{height:var(--th);display:flex;align-items:center;gap:10px;padding:0 20px;background:rgba(8,8,15,.75);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--border);flex-shrink:0}
 .tb-menu{display:none;background:var(--glass);border:1px solid var(--border);border-radius:var(--r);padding:7px 10px;cursor:pointer;color:var(--text);font-size:19px;line-height:1}
 .tb-title{font-size:17px;font-weight:700;flex:1;letter-spacing:-.3px}
 .tb-actions{display:flex;gap:7px;align-items:center}
@@ -79,7 +79,7 @@ html,body{height:100%;font-family:-apple-system,'SF Pro Display','Helvetica Neue
 .tb-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff}
 .ws-dot{width:7px;height:7px;border-radius:50%;background:var(--coral);flex-shrink:0;transition:background .4s}
 .ws-dot.on{background:var(--teal)}
-.content{flex:1;overflow-y:auto;padding:20px}
+.content{flex:1;overflow-y:auto;padding:20px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 
 /* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
@@ -327,6 +327,10 @@ html,body{height:100%;font-family:-apple-system,'SF Pro Display','Helvetica Neue
   #toast-wrap{bottom:80px;right:12px;left:12px}.toast{max-width:100%}
 }
 @media(max-width:420px){.stats-row{grid-template-columns:1fr 1fr}.ff-row{grid-template-columns:1fr}}
+@media(display-mode:standalone){
+  .topbar{height:calc(var(--th) + env(safe-area-inset-top));padding-top:env(safe-area-inset-top)}
+  .sidebar{padding-top:env(safe-area-inset-top)}
+}
 </style>
 </head>
 <body>
