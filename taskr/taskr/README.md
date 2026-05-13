@@ -1,12 +1,15 @@
 # Taskr — Full-Stack Task Manager
 
-> **Aktualna wersja: v1.0.7**
+> **Aktualna wersja: v1.0.8**
 
 Aplikacja do zarządzania zadaniami z backendem Node.js + SQLite, real-time WebSocket sync, drag & drop Kanban i interfejsem inspirowanym iOS 26.
 
 ---
 
 ## Changelog
+
+### v1.0.8 — 2026-05-13
+- **Fix:** Usunięto rosnący pusty obszar na dole w PWA — `-webkit-fill-available` było stosowane wielokrotnie na `html`, `body` i `#app` jednocześnie, powodując mnożenie wartości. Uproszczono do `height: 100%` na każdym poziomie.
 
 ### v1.0.7 — 2026-05-13
 - **Fix:** Modal tworzenia zadania nie wychodzi już poza górną belkę w PWA — `.modal-bg` zaczyna poniżej topbara.
