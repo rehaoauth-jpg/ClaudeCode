@@ -431,6 +431,7 @@ let calDate = new Date();
 let activeFilter = 'all', searchQ = '';
 let editingTaskId = null, editingParentId = null;
 let currentTags = [];
+let currentDetailId = null;
 
 // ═══ HELPERS ═══════════════════════════════════════════
 async function api(method, path, body) {
@@ -700,6 +701,11 @@ async function toggleDone(id){
     const updated=await api('PUT',`/api/tasks/${id}`,{status:t.done?'todo':'done'});
     tasks=tasks.map(x=>x.id===updated.id?updated:x);
     syncRefresh();
+    if(currentDetailId&&(currentDetailId===updated.id||findTask(updated.subtasks||[],currentDetailId))){
+      const detailTask=currentDetailId===updated.id?updated:findTask(updated.subtasks||[],currentDetailId);
+      const activity=await api('GET',`/api/tasks/${currentDetailId}/activity`);
+      renderDetailPanel(detailTask,activity);
+    }
   }catch(e){toast(e.message,'err');}
 }
 
@@ -859,7 +865,7 @@ function openGenericModal(title, bodyHtml, onSave){
   $('gm-save').onclick=onSave;
   $('modal-bg').classList.add('on');
 }
-function closeModal(){ $('modal-bg').classList.remove('on'); editingTaskId=null; editingParentId=null; currentTags=[]; }
+function closeModal(){ $('modal-bg').classList.remove('on'); editingTaskId=null; editingParentId=null; currentTags=[]; currentDetailId=null; }
 
 // ═══ TASK MODAL (add/edit) ══════════════════════════════
 function openTaskModal(id, parentId){
@@ -931,12 +937,12 @@ async function saveTask(){
 
 // ═══ TASK DETAIL ═══════════════════════════════════════
 async function openDetail(id){
+  currentDetailId=id;
   $('modal-title').textContent='Ładowanie…';
   $('modal-body').innerHTML='<div class="loading"><div class="spinner"></div>Ładowanie…</div>';
   $('modal-bg').classList.add('on');
   try{
     const [task, activity]=await Promise.all([api('GET',`/api/tasks/${id}`),api('GET',`/api/tasks/${id}/activity`)]);
-    // Update local cache
     if(task.parent_id){ tasks=tasks.map(t=>t.id===task.parent_id?{...t,subtasks:t.subtasks?.map(s=>s.id===task.id?task:s)}:t); }
     else { tasks=tasks.map(t=>t.id===task.id?task:t); }
     renderDetailPanel(task, activity);
