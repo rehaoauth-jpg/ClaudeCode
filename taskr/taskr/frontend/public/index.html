@@ -872,7 +872,7 @@ function openTaskModal(id, parentId){
 
   const userOptions=users.map(u=>`<option value="${u.id}"${task?.assignee_id===u.id?' selected':''}>${escH(u.name)}</option>`).join('');
 
-  $('modal-title').textContent=task?(isSubtask?'Edytuj subtask':'Edytuj zadanie'):(isSubtask?`Nowy subtask ${parentTask?'— '+parentTask.title:''}':'Nowe zadanie');
+  $('modal-title').textContent=task?(isSubtask?'Edytuj subtask':'Edytuj zadanie'):(isSubtask?`Nowy subtask ${parentTask?'— '+parentTask.title:''}`:'Nowe zadanie');
   $('modal-body').innerHTML=`
     ${parentTask?`<div style="font-size:12px;color:var(--text3);margin-bottom:12px;padding:8px 12px;background:var(--glass);border-radius:var(--r);border:1px solid var(--border)">📎 Subtask zadania: <b style="color:var(--text2)">${escH(parentTask.title)}</b></div>`:''}
     <div class="ff"><label>Tytuł</label><input id="f-title" placeholder="Tytuł..." value="${task?escH(task.title):''}"/></div>
