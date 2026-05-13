@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#08080f">
@@ -330,6 +330,9 @@ html,body{height:100%;height:-webkit-fill-available;font-family:-apple-system,'S
 @media(display-mode:standalone){
   .topbar{height:calc(var(--th) + env(safe-area-inset-top));padding-top:env(safe-area-inset-top)}
   .sidebar{padding-top:env(safe-area-inset-top)}
+  .modal-bg{top:calc(var(--th) + env(safe-area-inset-top))}
+  .content{padding-bottom:calc(80px + env(safe-area-inset-bottom))}
+  .mob-nav{padding-bottom:max(10px,env(safe-area-inset-bottom))}
 }
 </style>
 </head>
